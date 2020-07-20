@@ -71,3 +71,12 @@ set :ssh_options, {
 }
 
 set :tmp_dir, "/tmp/deploy-#{Time.now.to_f}"
+
+namespace :deploy do
+  desc "Create db"
+  task :create_db do
+    run "cd #{current_path} && bundle exec rails db:create"
+  end
+end
+
+before "deploy:migrate", "deploy:create_db"
